@@ -8,7 +8,7 @@ class Clusterer(BaseEstimator, TransformerMixin):
         self.kmeans = KMeans(n_clusters=num_clusters, random_state=0)
 
     def fit(self, X, y=None):
-        all_descriptors = np.vstack([desc for desc in X if desc is not None])
+        all_descriptors = np.vstack(X.to_numpy())
         self.kmeans.fit(all_descriptors)
         return self
 
