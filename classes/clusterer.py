@@ -20,4 +20,5 @@ class Clusterer(BaseEstimator, TransformerMixin):
             histogram, _ = np.histogram(clusters, bins=np.arange(self.num_clusters + 1))
             return histogram
 
-        return X.apply(create_histogram)
+        hist = X.apply(create_histogram)
+        return np.vstack(hist.to_numpy())
