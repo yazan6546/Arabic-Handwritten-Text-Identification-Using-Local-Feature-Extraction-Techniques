@@ -19,7 +19,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
             
         elif method == 'SIFT':
             self.detector = cv2.SIFT_create(
-                                nfeatures=0,
+                                nfeatures=750,
                                 nOctaveLayers=3,
                                 contrastThreshold=0.01,
                                 edgeThreshold=15,
@@ -62,7 +62,7 @@ class FeatureExtractor(BaseEstimator, TransformerMixin):
                             )
         elif self.method == 'SIFT':
             self.detector = cv2.SIFT_create(
-                                nfeatures=0,
+                                nfeatures=750,
                                 nOctaveLayers=3,
                                 contrastThreshold=0.01,
                                 edgeThreshold=15,
