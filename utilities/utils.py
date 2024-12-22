@@ -1,6 +1,7 @@
 import os  # OS module for file operations
 import shutil  # Shutil for file operations
 import cv2
+import pandas as pd
 
 
 # Load Images from File
@@ -15,6 +16,25 @@ def load_images_from_directory(directory, target_size=(256, 128)):
                             
                     data.append({'filename': filename, 'image': img})
     return data
+
+
+def load_images_to_dataframe(directory):
+    """
+    Load images from a directory and return a DataFrame containing the images and their filenames.
+
+    Parameters:
+    directory (str): The directory containing the images.
+
+    Returns:
+    pd.DataFrame: A DataFrame with columns 'filename' and 'image'.
+    """
+    
+    data = load_images_from_directory(directory)
+    df = pd.DataFrame(data)
+    df.set_index('filename', inplace=True)
+    df['Target'] = df.index.map(lambda x: x.split('_')[0])
+
+    return df
 
 
 def collect_images_and_copy_to_original(source_directory, target_directory):
