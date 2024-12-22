@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from sklearn.metrics import accuracy_score
-import utils
+from utilities import utils
 
 
 def process_modify_directory(directory, pipeline_sift, pipeline_orb):
