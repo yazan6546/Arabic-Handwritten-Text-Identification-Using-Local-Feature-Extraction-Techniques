@@ -1,4 +1,8 @@
-def apply_rotations_and_save(input_dir="data/preprocess", output_dir="data/rotate", rotation_angles=[45, 90, 135]):
+import os
+import cv2
+import numpy as np
+
+def apply_rotations_and_save(input_dir=os.path.join('data', 'preprocessed'), output_dir=os.path.join('data', 'rotate'), rotation_angles=[45, 90, 135]):
     # Traverse each image in the input directory
     for root, _, files in os.walk(input_dir):
         for filename in files:
@@ -43,7 +47,7 @@ def apply_rotations_and_save(input_dir="data/preprocess", output_dir="data/rotat
 
 
 
-def apply_noise_and_save(input_dir="data/preprocess", output_dir="data/noise", noise_levels=[10, 50]):
+def apply_noise_and_save(input_dir=os.path.join('data', 'preprocessed'), output_dir=os.path.join('data', 'noise'), noise_levels=[10, 50]):
     # Traverse each image in the input directory
     for root, _, files in os.walk(input_dir):
         for filename in files:
@@ -89,11 +93,11 @@ def scale_image(image, scale):
 
 
 
-def apply_scaling_and_save(input_dir="data/preprocess", output_dir="data/scaling", scaling_factors=[0.5, 0.75, 1.25, 1.5]):
+def apply_scaling_and_save(input_dir=os.path.join('data', 'preprocessed'), output_dir=os.path.join('data', 'scaling'), scaling_factors=[0.5, 0.75, 1.25, 1.5]):
     # Traverse each image in the input directory
     for root, _, files in os.walk(input_dir):
         for filename in files:
-            if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            if filename.endswith(('.png', '.jpg', '.jpeg')):
                 # Read the image
                 img_path = os.path.join(root, filename)
                 img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
@@ -111,3 +115,25 @@ def apply_scaling_and_save(input_dir="data/preprocess", output_dir="data/scaling
                     cv2.imwrite(output_path, scaled_img)
 
     print(f"Scaled images saved to {output_dir}")
+
+
+def modify_images(input_dir=os.path.join('data', 'preprocessed'), output_dir=os.path.join('data', 'output'), rotation_angles=[45, 90, 135], noise_levels=[10, 20, 30], scaling_factors=[0.5, 0.75, 1.25, 1.5]):
+    # Create output directories if they don't exist
+    os.makedirs(output_dir, exist_ok=True)
+    rotate_dir = os.path.join(output_dir, "rotate")
+    noise_dir = os.path.join(output_dir, "noise")
+    scaling_dir = os.path.join(output_dir, "scaling")
+
+    # Apply rotations and save
+    apply_rotations_and_save(input_dir=input_dir, output_dir=rotate_dir, rotation_angles=rotation_angles)
+
+    # Apply noise and save
+    apply_noise_and_save(input_dir=input_dir, output_dir=noise_dir, noise_levels=noise_levels)
+
+    # Apply scaling and save
+    apply_scaling_and_save(input_dir=input_dir, output_dir=scaling_dir, scaling_factors=scaling_factors)
+
+    print(f"Preprocessing completed. Images saved to {output_dir}")
+
+if __name__ == "__main__":
+    modify_images()
