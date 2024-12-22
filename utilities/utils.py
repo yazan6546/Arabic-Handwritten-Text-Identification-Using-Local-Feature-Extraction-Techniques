@@ -69,3 +69,9 @@ def preprocess_images(source_directory, target_directory, threshold_value=200, t
                 cv2.imwrite(target_file_path, thresholded_image)
                 
                 # print(f"Processed and saved {file_path} to {target_file_path}")
+
+
+def extract_images(df):
+    if 'image' not in df.columns:
+        raise KeyError("The DataFrame does not contain an 'image' column.")
+    return df['image']
