@@ -57,36 +57,10 @@ def plot_grouped_barcharts(df):
     # Adjust legend position
     plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=2)
 
+    # Customize x-tick labels
+    ax.set_xticks(range(len(df.index)))
+    ax.set_xticklabels(df.index, rotation=0, ha='center')
+
+    plt.tight_layout()
     plt.show()
     
-
-# Example usage
-# Assuming results_dict is a dictionary of DataFrames with the required columns
-results_dict = {
-    'noise_10': pd.DataFrame({
-        'accuracy_orb': [0.85],
-        'accuracy_sift': [0.88]
-    }),
-    'noise_20': pd.DataFrame({
-        'accuracy_orb': [0.86],
-        'accuracy_sift': [0.89]
-    }),
-    'scale_1.5': pd.DataFrame({
-        'accuracy_orb': [0.80],
-        'accuracy_sift': [0.83]
-    }),
-    'scale_2.0': pd.DataFrame({
-        'accuracy_orb': [0.81],
-        'accuracy_sift': [0.84]
-    }),
-    'rotation_30': pd.DataFrame({
-        'accuracy_orb': [0.78],
-        'accuracy_sift': [0.81]
-    }),
-    'rotation_60': pd.DataFrame({
-        'accuracy_orb': [0.79],
-        'accuracy_sift': [0.82]
-    })
-}
-
-plot_grouped_barcharts(results_dict)
