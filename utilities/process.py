@@ -2,12 +2,7 @@ import os
 import pandas as pd
 from sklearn.metrics import accuracy_score
 from utilities import utils
-
-
-import os
-from sklearn.metrics import accuracy_score
-from utilities import utils
-import pandas as pd
+import evaluate
 
 def process_modify_directory(directory, pipeline_sift, pipeline_orb, encoder):
     results = []
