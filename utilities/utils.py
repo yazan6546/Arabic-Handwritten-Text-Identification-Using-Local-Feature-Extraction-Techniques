@@ -1,6 +1,7 @@
 import os  # OS module for file operations
 import shutil  # Shutil for file operations
 import cv2
+import numpy as np
 import pandas as pd
 
 
@@ -95,3 +96,49 @@ def extract_images(df):
     if 'image' not in df.columns:
         raise KeyError("The DataFrame does not contain an 'image' column.")
     return df['image']
+
+
+def calculate_average_keypoints(df, image_column):
+    orb = cv2.ORB_create()
+    sift = cv2.SIFT_create()
+
+    orb_keypoints = []
+    sift_keypoints = []
+
+    for image in df[image_column]:
+        if image is None:
+            continue
+
+        # Detect keypoints and descriptors using ORB
+        kp_orb, des_orb = orb.detectAndCompute(image, None)
+        orb_keypoints.append(len(kp_orb))
+
+        # Detect keypoints and descriptors using SIFT
+        kp_sift, des_sift = sift.detectAndCompute(image, None)
+        sift_keypoints.append(len(kp_sift))
+
+    # Convert lists to NumPy arrays
+    orb_keypoints = np.array(orb_keypoints)
+    sift_keypoints = np.array(sift_keypoints)
+
+    sum_orb = np.sum(orb_keypoints) if orb_keypoints.size > 0 else 0
+    sum_sift = np.sum(sift_keypoints) if sift_keypoints.size > 0 else 0
+    
+    image_count = df['image'].shape[0]
+
+    avg_orb_keypoints = sum_orb / image_count
+    avg_sift_keypoints = sum_sift / image_count
+
+    # Create a DataFrame with the results
+    result_df = pd.DataFrame({
+        'ORB': {
+            'Average_Keypoints': avg_orb_keypoints,
+            'Sum_Keypoints': sum_orb
+        },
+        'SIFT': {
+            'Average_Keypoints': avg_sift_keypoints,
+            'Sum_Keypoints': sum_sift
+        }
+    })
+    
+    return result_df
