@@ -121,11 +121,24 @@ def calculate_average_keypoints(df, image_column):
     orb_keypoints = np.array(orb_keypoints)
     sift_keypoints = np.array(sift_keypoints)
 
-    # Calculate average number of keypoints using NumPy vectorized operations
-    avg_orb_keypoints = np.mean(orb_keypoints) if orb_keypoints.size > 0 else 0
-    avg_sift_keypoints = np.mean(sift_keypoints) if sift_keypoints.size > 0 else 0
+    sum_orb = np.sum(orb_keypoints) if orb_keypoints.size > 0 else 0
+    sum_sift = np.sum(sift_keypoints) if sift_keypoints.size > 0 else 0
+    
+    image_count = df['image'].shape[0]
+
+    avg_orb_keypoints = sum_orb / image_count
+    avg_sift_keypoints = sum_sift / image_count
 
     # Create a DataFrame with the results
     result_df = pd.DataFrame({
-        'Average_ORB_Keypoints': [avg_orb_keypoints],
-        'Average_SIFT_Keypoints': [avg_sift_keypoints]
+        'ORB': {
+            'Average_Keypoints': avg_orb_keypoints,
+            'Sum_Keypoints': sum_orb
+        },
+        'SIFT': {
+            'Average_Keypoints': avg_sift_keypoints,
+            'Sum_Keypoints': sum_sift
+        }
+    })
+    
+    return result_df
